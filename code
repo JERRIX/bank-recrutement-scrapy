@@ -1,0 +1,21 @@
+import urllib.request
+from bs4 import BeautifulSoup
+import pandas as pd
+
+url='http://www.yinhangzhaopin.com/tag/anhui_303_1.html'
+html=urllib.request.urlopen(url)
+htmltext=html.read().decode('ANSI').encode('UTF-8')
+soup=BeautifulSoup(htmltext,"html.parser")
+beautitext=soup.prettify()
+
+handle=open(r'E:\编程\recrutement.txt', 'w', encoding='UTF-8')
+handle.write(beautitext)
+handle.close()
+
+date=[x.text.strip() for x in soup.find_all('dd','list')]
+title=[x.text.strip() for x in soup.find_all('a','title')]
+df=pd.DataFrame()
+df['title']=title
+df['date']=date
+df.to_excel(r'E:\编程\recrutement.xlsx')
+print('DONE')
