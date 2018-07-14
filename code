@@ -1,4 +1,3 @@
-#
 import urllib.request
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -13,10 +12,18 @@ handle=open(r'E:\编程\recrutement.txt', 'w', encoding='UTF-8')
 handle.write(beautitext)
 handle.close()
 
-date=[x.text.strip() for x in soup.find_all('dd','list')]
-title=[x.text.strip() for x in soup.find_all('a','title')]
+date=[x.text.strip()[0:10] for x in soup.find_all('dd','list')]
+title=[]
+for x in soup.find_all('dt'):
+    title.append(x.text.strip())
+i=0
+while i<4:
+    title.pop(0)
+    i+=1
+    
 df=pd.DataFrame()
 df['title']=title
 df['date']=date
-df.to_excel(r'E:\编程\recrutement.xlsx')
+df.to_excel(r'E:\编程\recrutement\recrutement.xlsx')
 print('DONE')
+
